@@ -1,0 +1,43 @@
+<!-- templates/tweet/home.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container timeline-container">
+        <div class="row">
+            <!-- 왼쪽 컬럼 -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ user.username }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="col-md-12 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h3 class="mt-0">{{ todo.title }}</h5>
+                                    <h5 class="mt-0">{{ todo.content }}</h5>
+                                    {% if todo.is_completed %}
+                                    <button class="btn btn-primary" style="background-color: green;">완료!</button>
+                                    {% endif %}
+                                </div>
+                                <div style="text-align: right">
+                                    <span style="font-size: medium">{{ todo.author.username }} - {{ todo.created_at }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if todo.author == user %}
+                    <a href="/todo/update/{{ todo.id }}"><button class="btn btn-primary">수정하기</button></a>
+                    <a href="/todo/delete/{{ todo.id }}"><button class="btn btn-primary" style="background-color: red;">삭제하기</button></a>
+                    {% endif %}
+                </div>
+                <hr>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+<!-- templates/tweet/home.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container timeline-container">
+        <div class="row">
+            <!-- 왼쪽 컬럼 -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ user.username }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <h5 class="mt-0">할 일 리스트</h5>
+                <a href="/todo/create">
+                <button type="submit" class="btn btn-primary" style="float:right;">생성하기</button>
+                </a>
+                <hr>
+                <div class="row">
+                    {% for todo in todo_list %}
+                        <div class="col-md-12 mb-2">
+                            <a href="/todo/read/{{ todo.id }}">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div style="text-align: right">
+                                        {% if todo.is_completed %}
+                                        <span class="badge rounded-pill bg-success">완료!</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <h5 class="mt-0">{{ todo.title }}</h5>
+                                        </div>
+                                        <div style="text-align: right">
+                                            <span style="font-size: small">{{ todo.author.username }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+{% endblock %}
