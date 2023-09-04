@@ -1,7 +1,7 @@
 from django.db import models
 from user.models import UserModel
 
-class TweetModel(models.Model):
+class TodoModel(models.Model):
     author = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     title = models.CharField(max_length=32)
     content = models.CharField(max_length=256, default='')
