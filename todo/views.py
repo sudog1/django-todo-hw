@@ -38,9 +38,8 @@ def create_view(request):
         else:
             return redirect('/user/sign-in')
     elif request.method == 'POST':
-        author = request.user
         todo = TodoModel()
-        todo.author = author
+        todo.author = request.user
         todo.title = request.POST.get('title')
         todo.content = request.POST.get('content', '')
         todo.save()
@@ -78,3 +77,13 @@ def delete_view(request, id):
         return redirect('/todo')
     else:
         return redirect(f'/todo/read/{id}')
+    
+
+def mypage_view(request):
+    if request.method == 'GET':
+        user = request.user.is_authenticated
+        if user:
+            todo_list = TodoModel.objects.filter(author=request.user).order_by('-created_at')
+            return render(request, 'todo/home.html', {'todo_list': todo_list})
+        else:
+            return redirect('/user/sign-in')
