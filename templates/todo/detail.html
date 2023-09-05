@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Todo Info</h1>
+
+    <table class="table mt-3">
+        <tbody>
+            <tr>
+                <th>제목</th>
+                <td>{{ todo.title }}</td>
+            </tr>
+            <tr>
+                <th>내용</th>
+                <td>{{ todo.content }}</td>
+            </tr>
+            <tr>
+                <th>저자</th>
+                <td>{{ todo.author.username }}</td>
+            </tr>
+            <tr>
+                <th>작성 날짜</th>
+                <td>{{ todo.created_at }}</td>
+            </tr>
+            <tr>
+                <th>업데이트 날짜</th>
+                <td>{{ todo.updated_at }}</td>
+            </tr>
+            <tr>
+                <th>완료 여부</th>
+                <td>
+                    {% if todo.is_completed %}
+                    <span class="badge badge-success">완료</span>
+                    {% else %}
+                    <span class="badge badge-warning">미완료</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 해당 글의 저자에게만 보이는 업데이트 및 삭제 버튼 -->
+    {% if user.is_authenticated and user == todo.author %}
+    <a class="btn btn-primary" href="{% url 'todo:update' todo.id %}">Update</a>
+    <a class="btn btn-danger" href="{% url 'todo:delete' todo.id %}">Delete</a>
+    {% endif %}
+</div>
+{% endblock %}

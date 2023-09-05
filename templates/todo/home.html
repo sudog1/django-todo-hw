@@ -1,54 +1,45 @@
-<!-- templates/tweet/home.html -->
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-    <div class="container timeline-container">
-        <div class="row">
-            <!-- 왼쪽 컬럼 -->
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ user.username }}</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-7">
-                <h5 class="mt-0">할 일 리스트</h5>
-                <a href="/todo/create">
-                    <button class="btn btn-primary">생성하기</button>
-                </a>
-                <a href="/todo/mypage">
-                    <button class="btn btn-primary">내 할일만 보기</button>
-                </a>
-                <hr>
-                <div class="row">
-                    {% for todo in todo_list %}
-                        <div class="col-md-12 mb-2">
-                            <a href="/todo/read/{{ todo.id }}">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div style="text-align: right">
-                                        {% if todo.is_completed %}
-                                        <span class="badge rounded-pill bg-success">완료!</span>
-                                        {% endif %}
-                                    </div>
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <h5 class="mt-0">{{ todo.title }}</h5>
-                                        </div>
-                                        <div style="text-align: right">
-                                            <span style="font-size: small">{{ todo.author.username }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                    {% endfor %}
-                </div>
+<div class="container mt-5">
+    <h1>Todo List</h1>
 
-            </div>
-            <div class="col-md-2"></div>
-        </div>
-    </div>
+    <!-- 로그인한 사용자에게만 보이는 todo 생성 버튼 -->
+    {% if user.is_authenticated %}
+    <a class="btn btn-primary" href="{% url 'todo:create' %}">Create</a>
+    {% endif %}
+
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>제목</th>
+                <th>저자</th>
+                <th>완료 여부</th>
+                <th>작성 시간</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in todos %}
+            <tr>
+                <td>
+                    <a href="{% url 'todo:detail' todo.id %}">{{ todo.title }}</a>
+                </td>
+                <td {% if user.is_authenticated and user == todo.author %}style="color: green;"{% endif %}>
+                    {{ todo.author.username }}
+                </td>
+                <td>
+                    {% if todo.is_completed %}
+                    <span class="badge badge-success">완료</span>
+                    {% else %}
+                    <span class="badge badge-warning">미완료</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ todo.created_at | timesince }} 전
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

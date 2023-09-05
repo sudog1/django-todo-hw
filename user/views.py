@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from config.settings import LOGIN_REDIRECT_URL, LOGOUT_REDIRECT_URL
 from .models import UserModel
 from django.contrib.auth import get_user_model
-from django.urls import reverse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotAllowed
@@ -11,7 +11,7 @@ from django.http import HttpResponseNotAllowed
 def signup_view(request):
     if request.method == "GET":
         if request.user.is_authenticated:
-            return redirect("/")
+            return redirect(reverse("todo:home"))
         else:
             return render(request, "user/signup.html")
     elif request.method == "POST":
@@ -41,7 +41,7 @@ def signup_view(request):
 def signin_view(request):
     if request.method == "GET":
         if request.user.is_authenticated:
-            return redirect("/")
+            return redirect(reverse("todo:home"))
         else:
             return render(request, "user/signin.html")
     elif request.method == "POST":
