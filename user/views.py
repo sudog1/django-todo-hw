@@ -29,10 +29,11 @@ def signup_view(request):
                 request, "user/signup.html", {"error_message": "비밀번호를 확인해주세요."}
             )
         else:
-            UserModel.objects.create_user(
+            user = UserModel.objects.create_user(
                 username=username, password=password, email=email
             )
-            return redirect(reverse("user:signin"))
+            auth.login(request, user)
+            return redirect(LOGIN_REDIRECT_URL)
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
 
