@@ -4,7 +4,7 @@
 <div class="row justify-content-center mt-5">
     <div class="col-md-6">
         <div class="card">
-            <div class="card-header">SignUp</div>
+            <div class="card-header">Sign Up</div>
             <div class="card-body">
                 <form method="post" action="{% url 'user:signup' %}">
                     {% csrf_token %}
@@ -35,7 +35,9 @@
                     
                     <button type="submit" class="btn btn-primary">Sign Up</button>
                     {% if error_message %}
-                        <p class="error">{{ error_message }}</p>
+                        <div class="alert alert-danger mt-3" role="alert">
+                            {{ error_message }}
+                        </div>
                     {% endif %}
                 </form>
             </div>

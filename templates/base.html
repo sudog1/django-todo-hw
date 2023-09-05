@@ -19,6 +19,9 @@
                 {% if user.is_authenticated %}
                     <!-- 사용자가 로그인한 경우 -->
                     <li class="nav-item">
+                        <span class="nav-link">Welcome, {{ user.username }}</span>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'user:logout' %}">Logout</a>
                     </li>
                 {% else %}
