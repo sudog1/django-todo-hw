@@ -10,7 +10,7 @@
 <body>
     <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'todo:home' %}">Home</a>
+        <a class="navbar-brand" href="{% url 'todo:home' %}"><strong>Home</strong></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -18,36 +18,39 @@
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
                     <!-- 사용자가 로그인한 경우 -->
+                    {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="프로필 사진" class="rounded" height="40px">
+                    {% endif %}
                     <li class="nav-item">
-                        <span class="nav-link">환영합니다, {{ user.username }} 님</span>
+                        <span class="nav-link disabled mr-4"><strong>환영합니다, {{ user.username }}님</strong></span>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'todo:mypage' %}">My Page</a>
+                        <a class="nav-link" href="{% url 'user:profile' %}">프로필 설정</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'user:logout' %}">Logout</a>
+                        <a class="nav-link" href="{% url 'todo:mypage' %}">나의 Todo보기</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user:logout' %}">로그아웃</a>
                     </li>
                 {% else %}
                     <!-- 사용자가 로그인하지 않은 경우 -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'user:signin' %}">SignIn</a>
+                        <a class="nav-link" href="{% url 'user:signin' %}">로그인</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'user:signup' %}">SignUp</a>
+                        <a class="nav-link" href="{% url 'user:signup' %}">회원가입</a>
                     </li>
                 {% endif %}
             </ul>
         </div>
     </nav>
-
+    
     <!-- Content -->
     <div class="container mt-4">
         {% block content %}{% endblock %}
     </div>
 
-    <!-- Add Bootstrap JS and jQuery links here (required for Bootstrap components) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
