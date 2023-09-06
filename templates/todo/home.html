@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1>Todo List</h1>
+    <h1 class="mb-4">Todo List</h1>
 
     <!-- 로그인한 사용자에게만 보이는 todo 생성 버튼 -->
     {% if user.is_authenticated %}
@@ -13,6 +13,7 @@
         <thead>
             <tr>
                 <th>제목</th>
+                <th>추천</th>
                 <th>저자</th>
                 <th>완료 여부</th>
                 <th>작성 시간</th>
@@ -23,15 +24,19 @@
             <tr>
                 <td>
                     <a href="{% url 'todo:detail' todo.id %}">{{ todo.title }}</a>
+                    <span class="text-danger small mx-1">({{todo.comment.count}})</span>
+                </td>
+                <td>
+                    {{ todo.likes.count }}
                 </td>
                 <td {% if user.is_authenticated and user == todo.author %}style="color: green;"{% endif %}>
                     {{ todo.author.username }}
                 </td>
                 <td>
-                    {% if todo.is_completed %}
+                    {% if todo.completed %}
                     <span class="badge badge-success">완료</span>
                     {% else %}
-                    <span class="badge badge-warning">미완료</span>
+                    <span class="badge badge-light">미완료</span>
                     {% endif %}
                 </td>
                 <td>

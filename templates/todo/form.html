@@ -2,22 +2,22 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1>{% if todo %}ToDo 수정{% else %}ToDo 생성{% endif %}</h1>
+    <h1 class="mb-4">Todo {% if todo %}수정{% else %}작성{% endif %}</h1>
 
     <form method="post" action="{% if todo %}{% url 'todo:update' todo.id %}{% else %}{% url 'todo:create' %}{% endif %}">
         {% csrf_token %}
         <div class="form-group">
-            <label for="title">제목:</label>
+            <label for="title">할 일</label>
             <input type="text" class="form-control" id="title" name="title" value="{{ todo.title }}">
         </div>
         <div class="form-group">
-            <label for="content">내용:</label>
+            <label for="content">내용</label>
             <textarea class="form-control" id="content" name="content" rows="4">{{ todo.content }}</textarea>
         </div>
         {% if todo %}
             <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="is_completed" name="is_completed" {% if todo.is_completed %}checked{% endif %}>
-                <label class="form-check-label" for="is_completed">완료 여부</label>
+                <input type="checkbox" class="form-check-input" id="completed" name="completed" {% if todo.completed %}checked{% endif %}>
+                <label class="form-check-label" for="completed">완료!</label>
             </div>
         {% endif %}
         <button type="submit" class="btn btn-primary">저장</button>
