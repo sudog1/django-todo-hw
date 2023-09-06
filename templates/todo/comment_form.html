@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- 댓글 수정 폼 -->
 <div class="container my-3">
     <form method="post" action="{% url 'todo:update_comment' todo_id=todo_id comment_id=comment.id %}"> 
         {% csrf_token %}

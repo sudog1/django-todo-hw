@@ -15,25 +15,29 @@ def signup_view(request):
             return render(request, "user/signup.html")
     elif request.method == "POST":
         username = request.POST.get("username")
-        if get_user_model().objects.filter(username=username).exists():
-            return render(
-                request, "user/signup.html", {"error_message": "존재하는 아이디입니다."}
-            )
         email = request.POST.get("email")
 
         # profile change
         if request.user.is_authenticated:
             user = request.user
-            if username:
+            if username != user.username:
+                if get_user_model().objects.filter(username=username).exists():
+                    return render(
+                        request, "user/profile.html", {"error_message": "존재하는 아이디입니다."}
+                    )
                 user.username = username
-            if email:
+            if email != user.email:
                 user.email = email
             user.save()
             return redirect(reverse("user:profile"))
 
         password = request.POST.get("password")
         password2 = request.POST.get("password2")
-        if password != password2:
+        if get_user_model().objects.filter(username=username).exists():
+            return render(
+                request, "user/signup.html", {"error_message": "존재하는 아이디입니다."}
+            )
+        elif password != password2:
             return render(
                 request, "user/signup.html", {"error_message": "비밀번호를 확인해주세요."}
             )
