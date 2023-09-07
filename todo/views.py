@@ -137,7 +137,9 @@ def update_comment_view(request, todo_id, comment_id):
         comment.content = request.POST.get("content", "")
         comment.save()
         # 업데이트된 댓글로 리다이렉트
-        return redirect(reverse("todo:detail", args=[todo_id]) + f"#댓글_{comment_id}")
+        return redirect(
+            reverse("todo:detail", args=[todo_id]) + f"#comment_{comment_id}"
+        )
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
 
@@ -168,6 +170,8 @@ def likes_comment_view(request, todo_id, comment_id):
         else:
             comment.likes.add(user)
         # 좋아요를 누른 댓글로 리다이렉트
-        return redirect(reverse("todo:detail", args=[todo_id]) + f"#댓글_{comment_id}")
+        return redirect(
+            reverse("todo:detail", args=[todo_id]) + f"#comment_{comment_id}"
+        )
     else:
         return HttpResponseNotAllowed(["POST"])
