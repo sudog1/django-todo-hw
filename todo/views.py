@@ -8,7 +8,7 @@ from django.http import HttpResponseNotAllowed
 
 def home_view(request):
     if request.method == "GET":
-        todos = TodoModel.objects.all().order_by("-created_at")
+        todos = TodoModel.objects.prefetch_related("likes").order_by("-created_at")
         return render(request, "todo/home.html", {"todos": todos})
     else:
         return HttpResponseNotAllowed(["GET"])
@@ -18,8 +18,10 @@ def detail_view(request, id):
     if request.method == "GET":
         todo = get_object_or_404(TodoModel, id=id)
         # 댓글을 좋아요, 최신순으로 정렬
-        comments = todo.comment.annotate(count_likes=Count("likes")).order_by(
-            "-count_likes", "-created_at"
+        comments = (
+            todo.comment.prefetch_related("likes")
+            .annotate(count_likes=Count("likes"))
+            .order_by("-count_likes", "-created_at")
         )
         return render(request, "todo/detail.html", {"todo": todo, "comments": comments})
     else:
